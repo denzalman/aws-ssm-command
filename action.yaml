@@ -1,0 +1,39 @@
+name: "AWS SSM Command"
+author: "Den Zalman <onpalm@gmail.com>"
+
+branding:
+  icon: "arrow-up-right"
+  color: "green"
+
+description: "Remote bash command execution on AWS EC2 instance."
+
+inputs:
+  instance_ids:
+    required: true
+    description: "AWS EC2 Instance id or ids"
+  aws_region:
+    required: false
+    description: "AWS region of EC2 Instance"
+    default: "us-east-1"
+  command:
+    required: false
+    description: "Bash command for execution"
+    default: "echo ls -al"
+  working_directory:
+    required: false
+    description: "Command execution directory"
+    default: "/home/ubuntu"
+  comment:
+    required: false
+    description: "Comment"
+    default: "Executed by Github Actions"
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.instance_ids }}
+    - ${{ inputs.aws_region }}
+    - ${{ inputs.command }}
+    - ${{ inputs.working_directory }}
+    - ${{ inputs.comment }}
